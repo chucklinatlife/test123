@@ -13,22 +13,7 @@ def hello_person():
 
 @app.route('/tem')
 def index():
-    user = { 'nickname': 'Miguel' } # fake user
     return render_template("index.html")
-
-
-@app.route('/greet', methods=['POST'])
-def greet():
-    greeting = random.choice(["Hiya", "Hallo", "Hola", "Ola", "Salut", "Privet", "Konnichiwa", "Ni hao"])
-    return """
-        <p>%s, %s!</p>
-        <p><a href="%s">Back to start</a></p>
-        """ % (greeting, request.form["person"], url_for('hello_person'))
-
-@app.route('/testparams')
-def showparams():
-    param1 = request.args.get('param1', '0-100')
-    return "param1 = %s" % (str(param1),)
 
 @app.route('/postdata')
 def postdata():
@@ -51,12 +36,3 @@ def getdata():
     else:
         return 'invalid'
 
-
-@app.route('/hello')
-def hello():
-    return json.dumps(
-        {
-            "siteName": "JQUERY4U",
-            "domainName": "http://www.jquery4u.com",
-            "description": "#1 jQuery Blog for your Daily News, Plugins, Tuts/Tips &amp; Code Snippets."
-        })
