@@ -3,7 +3,7 @@
 
 	<script src = "http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script>
-	$(document).ready(
+	$document.ready(
 	    function(){
 	        document.getElementById("status_red").innerHTML = "unknown";
 	         document.getElementById("status_yellow").innerHTML = "unknown";
@@ -37,7 +37,7 @@
   </head>
   <body>
 
-     <img class="logo" src="{{url_for('static',filename='brcmlogo.png')}}" alt="Broadcom_Logo></img>
+     <img class="logo" src="{{url_for('static',filename='brcmlogo.png')}}" alt="Broadcom_Logo"></img>
     <h1 align="center"> WICED SMART APPLIANCE DEMO APPLICATION</h1>
      <button onclick="postdataRED()">RED LED</button>
      <button onclick="postdataYELLOW()">YELLOW LED</button>
