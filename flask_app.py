@@ -18,9 +18,9 @@ def invert():
         with open (key+'.txt', 'w') as file:
             file.write(current_value)
         if current_value == '1':
-            return "LED ON"
+            return "ON"
         else:
-            return "LED OFF"
+            return "OFF"
     else:
         return "invalid"
 
