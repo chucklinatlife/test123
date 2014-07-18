@@ -24,7 +24,8 @@ def invert():
     else:
         return "invalid"
 
-@app.route('/tem')
+@app.route('/main')
+#this function renders the html template
 def index():
     return render_template("index.html")
 
@@ -33,6 +34,7 @@ def postdata():
     key = request.args.get('key')
     value = request.args.get('value')
     print "key = %s, value = %s" % (key, value)
+    #writes value to a file
     with open (key+'.txt', 'w') as file:
         file.write(value)
     return "gotya"
@@ -42,6 +44,8 @@ def getdata():
     key = request.args.get('key')
     #value = request.args.get('value')
     #print "key = %s, value = %s" % (key, value)
+
+    #checks if the file exists, then reads existing file and returns the value
     if os.path.isfile(key + '.txt'):
         with open (key+'.txt', 'r') as file:
             value = file.read()
