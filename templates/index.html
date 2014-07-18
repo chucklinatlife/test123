@@ -5,15 +5,25 @@
 	<script>
 	$document.ready(
 	    function(){
-	        document.getElementById("status").innerHTML = "unknown";
+	        document.getElementById("status_red").innerHTML = "unknown";
+	         document.getElementById("status_yellow").innerHTML = "unknown";
 	    }
 	    )
-	function postdata(){
-	$.get("/invert?key=led", function(data,status){
+	function postdataRED(){
+	$.get("/invert?key=led1", function(data,status){
 	//alert("Data: " + data +"\nStatus: " + status);
-	    document.getElementById("status").innerHTML = data;
+	    document.getElementById("status_red").innerHTML = data;
 	});
 	}
+
+	function postdataYELLOW(){
+	$.get("/invert?key=led2", function(data,status){
+	//alert("Data: " + data +"\nStatus: " + status);
+	    document.getElementById("status_yellow").innerHTML = data;
+	});
+	}
+
+
 	</script>
   <style>
 	img.logo
@@ -26,10 +36,13 @@
 
   </head>
   <body>
-    <img class="logo" src="https://s3.amazonaws.com/WICED/Images/brcmlogo.png" alt="Broadcom_Logo" >
+
+     <img class="logo" src="{{url_for('static',filename='brcmlogo.png')}}" alt="Broadcom_Logo></img>
     <h1 align="center"> WICED SMART APPLIANCE DEMO APPLICATION</h1>
-    <p align="center">Click the button, then check the UART and the LED</p>
-     <button onclick="postdata()">RED LED</button>
-     <p>Status of LED: <span id="status"> </span></p>
+    <p>Hello Danielle</p>
+     <button onclick="postdataRED()">RED LED</button>
+     <button onclick="postdataYELLOW()">YELLOW LED</button>
+     <p>Status of Red LED: <span id="status_red"> </span></p>
+     <p>Status of Yellow LED: <span id="status_yellow"> </span></p>
   </body>
 </html>

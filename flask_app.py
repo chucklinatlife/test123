@@ -36,8 +36,10 @@ def postdata():
     print "key = %s, value = %s" % (key, value)
     #writes value to a file
     with open (key+'.txt', 'w') as file:
-        file.write(value)
-    return "gotya"
+        file.write(value+"\n")
+    return ("written successfully with value %s" %(value))
+
+
 
 @app.route('/getdata')
 def getdata():
@@ -52,4 +54,5 @@ def getdata():
         return value
     else:
         return 'invalid'
+
 
