@@ -1,16 +1,23 @@
 <html>
   <head>
-    
+
 	<script src = "http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script>
+	$document.ready(
+	    function(){
+	        document.getElementById("status").innerHTML = "unknown";
+	    }
+	    )
 	function postdata(){
-	$.get("/getdata?key=led", function(data,status){
-	alert("Data: " + data +"\nStatus: " + status);
+	$.get("/invert?key=led", function(data,status){
+	//alert("Data: " + data +"\nStatus: " + status);
+	    document.getElementById("status").innerHTML = data;
 	});
 	}
 	</script>
   </head>
   <body>
      <button onclick="postdata()">BUTTON</button>
+     <h1>Status is <p id="status"> </p></h1>
   </body>
 </html>
