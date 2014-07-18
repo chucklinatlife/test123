@@ -3,12 +3,13 @@
 
 	<script src = "http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script>
-	$document.ready(
+	$(document).ready(
 	    function(){
 	        document.getElementById("status_red").innerHTML = "unknown";
 	         document.getElementById("status_yellow").innerHTML = "unknown";
-	    }
-	    )
+	    });
+
+
 	function postdataRED(){
 	$.get("/invert?key=led1", function(data,status){
 	//alert("Data: " + data +"\nStatus: " + status);
@@ -24,6 +25,9 @@
 	}
 
 
+
+
+
 	</script>
   <style>
 	img.logo
@@ -32,6 +36,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	}
+
 	</style>
 
   </head>
@@ -41,14 +46,17 @@
     <h1 align="center"> WICED SMART APPLIANCE DEMO APPLICATION</h1>
 
 
-    <div id="top-row" align="center">
-    <span id="first_img"><img class="lamp" src="{{url_for('static',filename='lamp.png')}}" alt="lamp"></img></span>
-    <span id="second_img"><img class="coffee" src="{{url_for('static',filename='coffee.png')}}" alt="coffee"></img></span>
-    </div>
-    <div id="bottom-row" align="center">
-     <span id="first_app"><button onclick="postdataRED()">RED LED</button></span>
-     <span id="second_app"><button onclick="postdataYELLOW()">YELLOW LED</button></span>
-    </div>
+    <table align="center">
+    <tr>
+    <td colspan="4" style="text-align:center"><span id="first_img"><img class="lamp" src="{{url_for('static',filename='lamp.png')}}" alt="lamp"></img></span></td>
+    <td  colspan="4" style="text-align:center"><span id="second_img"><img class="coffee" src="{{url_for('static',filename='coffee.png')}}" alt="coffee"></img></span></td>
+    </tr>
+   <tr>
+    <td  colspan="4" style="text-align:center"><span id="first_app"><button onclick="postdataRED()">RED LED</button></span></td>
+    <td  colspan="4" style="text-align:center"><span id="second_app"><button onclick="postdataYELLOW()">YELLOW LED</button></span></td>
+   </tr>
+
+    </table>
      <p>Status of Red LED: <span id="status_red"> </span></p>
      <p>Status of Yellow LED: <span id="status_yellow"> </span></p>
   </body>
