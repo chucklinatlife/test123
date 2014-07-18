@@ -39,8 +39,16 @@
 
      <img class="logo" src="{{url_for('static',filename='brcmlogo.png')}}" alt="Broadcom_Logo"></img>
     <h1 align="center"> WICED SMART APPLIANCE DEMO APPLICATION</h1>
-     <button onclick="postdataRED()">RED LED</button>
-     <button onclick="postdataYELLOW()">YELLOW LED</button>
+
+
+    <div id="top-row" align="center">
+    <span id="first_img"><img class="lamp" src="{{url_for('static',filename='lamp.png')}}" alt="lamp"></img></span>
+    <span id="second_img"><img class="coffee" src="{{url_for('static',filename='coffee.png')}}" alt="coffee"></img></span>
+    </div>
+    <div id="bottom-row" align="center">
+     <span id="first_app"><button onclick="postdataRED()">RED LED</button></span>
+     <span id="second_app"><button onclick="postdataYELLOW()">YELLOW LED</button></span>
+    </div>
      <p>Status of Red LED: <span id="status_red"> </span></p>
      <p>Status of Yellow LED: <span id="status_yellow"> </span></p>
   </body>
