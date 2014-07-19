@@ -6,21 +6,36 @@
 	$(document).ready(
 	    function(){
 	        document.getElementById("status_red").innerHTML = "unknown";
-	         document.getElementById("status_yellow").innerHTML = "unknown";
+            document.getElementById("status_yellow").innerHTML = "unknown";
+            setTimeout(updateRED, 500);
+            setTimeout(updateYELLOW, 500);
 	    });
 
+    function updateRED(){
+	    $.get("/getdata?key=led1", function(data,status){
+            document.getElementById("status_red").innerHTML = data;
+            setTimeout(updateRED, 500);
+	    });
+    }
+
+    function updateYELLOW(){
+	    $.get("/getdata?key=led2", function(data,status){
+            document.getElementById("status_yellow").innerHTML = data;
+            setTimeout(updateYELLOW, 500);
+	    });
+    }
 
 	function postdataRED(){
 	$.get("/invert?key=led1", function(data,status){
 	//alert("Data: " + data +"\nStatus: " + status);
-	    document.getElementById("status_red").innerHTML = data;
+	    //document.getElementById("status_red").innerHTML = data;
 	});
 	}
 
 	function postdataYELLOW(){
 	$.get("/invert?key=led2", function(data,status){
 	//alert("Data: " + data +"\nStatus: " + status);
-	    document.getElementById("status_yellow").innerHTML = data;
+	    //document.getElementById("status_yellow").innerHTML = data;
 	});
 	}
 

@@ -51,7 +51,10 @@ def getdata():
     if os.path.isfile(key + '.txt'):
         with open (key+'.txt', 'r') as file:
             value = file.read()
-        return value
+        if value == '1':
+            return "ON"
+        else:
+            return "OFF"
     else:
         return 'invalid'
 
