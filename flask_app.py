@@ -30,6 +30,11 @@ def invert():
 @app.route('/main')
 #this function renders the html template
 def index():
+    updatedelay()
+    return render_template("index.html")
+
+@app.route('/updatedelay')
+def updatedelay():
     #read delay data
     with open ('delay.txt','r') as file:
         delay_array = file.readlines()
@@ -37,7 +42,15 @@ def index():
         delay_array[idx] = int(delay)
 
     plot_delay(delay_array, 'mysite/static/delay_plot.jpeg')
-    return render_template("index.html")
+    return ""
+
+@app.route('/getlatestdelay')
+def getlatestdelay():
+    #read delay data
+    with open ('delay.txt','r') as file:
+        delay_array = file.readlines()
+    print "getlatestdelay: " + str(delay_array[-1])
+    return delay_array[-1].strip()
 
 @app.route('/postdata')
 def postdata():
