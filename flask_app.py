@@ -1,5 +1,8 @@
 from flask import Flask, request, url_for,render_template
 import random, os, os.path, json
+import matplotlib.pyplot as plt
+
+
 
 app = Flask(__name__)
 app.secret_key = 'This is really unique and secret'
@@ -27,6 +30,13 @@ def invert():
 @app.route('/main')
 #this function renders the html template
 def index():
+    #read delay data
+    with open ('delay.txt','r') as file:
+        delay_array = file.readlines()
+    for idx,delay in enumerate(delay_array):
+        delay_array[idx] = int(delay)
+
+    plot_delay(delay_array, 'mysite/static/delay_plot.jpeg')
     return render_template("index.html")
 
 @app.route('/postdata')
@@ -80,4 +90,7 @@ def getDelayData():
             return file.read()
     else:
         return 'invalid'
-
+def plot_delay(data, output):
+    plt.plot(data)
+    plt.ylabel('Delay')
+    plt.savefig(output)
