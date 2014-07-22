@@ -33,6 +33,11 @@ def index():
     updatedelay()
     return render_template("index.html")
 
+@app.route('/imgsw')
+#this function renders the image switch html
+def switchindex():
+    return render_template("rgbtest.html")
+
 @app.route('/updatedelay')
 def updatedelay():
     #read delay data
