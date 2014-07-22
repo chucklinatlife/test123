@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<head>
+<script src = "http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!--
+<script type="text/javascript">
+var newsrc = "{{url_for('static',filename='lamp.png')}}" ;
+
+function changeImage(){
+    if (newsrc == "{{url_for('static',filename='lamp.png')}}"){
+        document.images["pic"].src="{{url_for('static',filename='lamp.png')}}";
+        document.images["pic"].alt="lamp";
+        newsrc = "{{url_for('static',filename='coffee.png')}}";
+    }
+    else {
+        document.images["pic"].src="{{url_for('static',filename='coffee.png')}}";
+        document.images["pic"].alt="coffee";
+        newsrc = "{{url_for('static',filename='coffee.png')}}";
+    }
+}
+
+
+
+//var offImg= "{{url_for('static',filename='coffee.png')}}";
+</script>
+-->
+
+<script type="text/javascript">
+var a = "http://placehold.it/110x110";
+var b = "http://placehold.it/120x60";
+
+function changeImage(){
+if (document.getElementById("img").src == a){
+document.getElementById("img").src = b;
+}
+if (document.getElementById("img").src == b){
+document.getElementById("img").src = a;
+}
+</script>
+
+
+</head>
+<body>
+
+<!--<img src="{{url_for('static',filename='lamp.png')}}" alt="lamp" onclick="changeImage()"/>-->
+
+<div id="main_img">
+    <img id="img" src="http://placehold.it/110x110" onclick= "changeImage()">
+</div>
+
+
+</body>
+</html>
