@@ -1,27 +1,68 @@
 <!DOCTYPE html>
 <head>
 <script src = "http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
 <script>
 
-var current = 1;
-function changeImage(){
-    switch (current){
+$(document).ready(function(){
+    document.getElementById("led_off0").style.visibility="visible";
+    document.getElementById("led_red").style.visibility="hidden";
+    document.getElementById("led_off1").style.visibility="visible";
+    document.getElementById("led_blue").style.visibility="hidden";
+    document.getElementById("led_off2").style.visibility="visible";
+    document.getElementById("led_green").style.visibility="hidden";
+    });
+
+var current_red = 1;
+function changeLED_red(){
+    switch (current_red){
         case 0:
-            document.getElementById("img0").style="visibility:visibile;";
-            document.getElementById("img1").style="visibility:hidden;";
+            document.getElementById("led_red").style.visibility="visible";
+            document.getElementById("led_off0").style.visibility="hidden";
             break;
         case 1:
-            document.getElementById("img1").style="visibility:visible;";
-            document.getElementById("img0").style="visibility:hidden;";
+            document.getElementById("led_off0").style.visibility="visible";
+            document.getElementById("led_red").style.visibility="hidden";
             break;
     }
 
 
-   current = (current + 1) %2;
+   current_red = (current_red + 1) %2;
 }
 
+var current_blue = 1;
+function changeLED_blue(){
+    switch (current_blue){
+        case 0:
+            document.getElementById("led_blue").style.visibility="visible";
+            document.getElementById("led_off1").style.visibility="hidden";
+            break;
+        case 1:
+            document.getElementById("led_off1").style.visibility="visible";
+            document.getElementById("led_blue").style.visibility="hidden";
+            break;
+    }
 
 
+   current_blue = (current_blue + 1) %2;
+}
+
+var current_green = 1;
+function changeLED_green(){
+    switch (current_green){
+        case 0:
+            document.getElementById("led_green").style.visibility="visible";
+            document.getElementById("led_off2").style.visibility="hidden";
+            break;
+        case 1:
+            document.getElementById("led_off2").style.visibility="visible";
+            document.getElementById("led_green").style.visibility="hidden";
+            break;
+    }
+
+
+   current_green = (current_green + 1) %2;
+}
 
 
 </script>
@@ -30,17 +71,55 @@ function changeImage(){
         position: relative;
 }
 
+.imageWrapper2{
+        position: relative;
+		top: 20%;
+		left: 10%;
+
+}
+
+.imageWrapper3{
+        position: relative;
+		top: 20%;
+		left: 20%;
+
+}
+
 .overlayImage{
     position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.overlayImage2{
+    position:absolute;
+    top: 0;
+    left: 0;
+}
+
+.overlayImage3{
+    position:absolute;
     top: 0;
     left: 0;
 }
 </style>
 
 <body>
-<div class="imageWrapper" onclick="changeImage()">
-    <img class = "overlayImage" id="img0" src="{{url_for('static',filename='lamp.png')}}" alt ="lamp">
-    <img class = "overlayImage" id="img1" src="{{url_for('static',filename='coffee.png')}}" alt = "coffee">
+<p>Click on Image to switch</p>
+<br>
+<div class="imageWrapper" onclick="changeLED_red()">
+    <img class = "overlayImage" id="led_off0" src="{{url_for('static',filename='led_off.png')}}" alt ="off0">
+    <img class = "overlayImage" id="led_red" src="{{url_for('static',filename='led_red.png')}}" alt = "red">
+</div>
+<!--<br><br><br><br><br><br><br>-->
+<div class="imageWrapper2" onclick="changeLED_blue()">
+    <img class = "overlayImage2" id="led_off1" src="{{url_for('static',filename='led_off.png')}}" alt ="off1">
+    <img class = "overlayImage2" id="led_blue" src="{{url_for('static',filename='led_blue.png')}}" alt = "blue">
+</div>
+
+<div class="imageWrapper3" onclick="changeLED_green()">
+    <img class = "overlayImage3" id="led_off2" src="{{url_for('static',filename='led_off.png')}}" alt ="off2">
+    <img class = "overlayImage3" id="led_green" src="{{url_for('static',filename='led_green.png')}}" alt = "green">
 </div>
 
 
