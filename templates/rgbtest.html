@@ -1,50 +1,46 @@
 <!DOCTYPE html>
 <head>
 <script src = "http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<!--
-<script type="text/javascript">
-var newsrc = "{{url_for('static',filename='lamp.png')}}" ;
+<script>
 
+var current = 1;
 function changeImage(){
-    if (newsrc == "{{url_for('static',filename='lamp.png')}}"){
-        document.images["pic"].src="{{url_for('static',filename='lamp.png')}}";
-        document.images["pic"].alt="lamp";
-        newsrc = "{{url_for('static',filename='coffee.png')}}";
+    switch (current){
+        case 0:
+            document.getElementById("img0").style="visibility:visibile;";
+            document.getElementById("img1").style="visibility:hidden;";
+            break;
+        case 1:
+            document.getElementById("img1").style="visibility:visible;";
+            document.getElementById("img0").style="visibility:hidden;";
+            break;
     }
-    else {
-        document.images["pic"].src="{{url_for('static',filename='coffee.png')}}";
-        document.images["pic"].alt="coffee";
-        newsrc = "{{url_for('static',filename='coffee.png')}}";
-    }
+
+
+   current = (current + 1) %2;
 }
 
 
 
-//var offImg= "{{url_for('static',filename='coffee.png')}}";
+
+
 </script>
--->
-
-<script type="text/javascript">
-var a = "http://placehold.it/110x110";
-var b = "http://placehold.it/120x60";
-
-function changeImage(){
-if (document.getElementById("img").src == a){
-document.getElementById("img").src = b;
+<style>
+.imageWrapper{
+        position: relative;
 }
-if (document.getElementById("img").src == b){
-document.getElementById("img").src = a;
+
+.overlayImage{
+    position: absolute;
+    top: 0;
+    left: 0;
 }
-</script>
+</style>
 
-
-</head>
 <body>
-
-<!--<img src="{{url_for('static',filename='lamp.png')}}" alt="lamp" onclick="changeImage()"/>-->
-
-<div id="main_img">
-    <img id="img" src="http://placehold.it/110x110" onclick= "changeImage()">
+<div class="imageWrapper" onclick="changeImage()">
+    <img class = "overlayImage" id="img0" src="{{url_for('static',filename='lamp.png')}}" alt ="lamp">
+    <img class = "overlayImage" id="img1" src="{{url_for('static',filename='coffee.png')}}" alt = "coffee">
 </div>
 
 
