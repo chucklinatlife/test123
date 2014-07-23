@@ -1,0 +1,364 @@
+<html>
+  <head>
+
+	<script src = "http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src = "{{url_for('static', filename='RGraph.common.core.js')}}"></script>
+	<script src = "{{url_for('static', filename='RGraph.line.js')}}"></script>
+	<script>
+	 var obj = null;
+	 var d1  = [];
+	$(document).ready(
+	    function(){
+
+            l   = 0; // The letter 'L' - NOT a one
+
+            // Pre-pad the arrays with null values
+            for (var i=0; i<600; ++i) {
+                d1.push(null);
+            }
+
+
+
+	        document.getElementById("status_red").innerHTML = "unknown";
+            document.getElementById("status_green").innerHTML = "unknown";
+            document.getElementById("led_off0").style.visibility="visible";
+            document.getElementById("led_red").style.visibility="hidden";
+            document.getElementById("led_off2").style.visibility="visible";
+            document.getElementById("led_green").style.visibility="hidden";
+            document.getElementById("led_off1").style.visibility="visible";
+            document.getElementById("led_blue").style.visibility="hidden";
+
+
+
+            setTimeout(updateRED, 500);
+            setTimeout(updateGREEN, 500);
+            setTimeout(updateBLUE, 500);
+            setTimeout(updateGraph,100);
+	    });
+
+    function updateRED(){
+	    $.get("/getdata?key=led1", function(data,status){
+            document.getElementById("status_red").innerHTML = data;
+             if (data=="ON"){
+                document.getElementById("led_off0").style.visibility="hidden";
+                document.getElementById("led_red").style.visibility="visible";
+            }
+            else{
+                document.getElementById("led_off0").style.visibility="visible";
+                document.getElementById("led_red").style.visibility="hidden";
+            }
+            setTimeout(updateRED, 500);
+
+	    });
+    }
+
+    function updateGREEN(){
+	    $.get("/getdata?key=led2", function(data,status){
+            document.getElementById("status_green").innerHTML = data;
+             if (data=="ON"){
+                document.getElementById("led_off2").style.visibility="hidden";
+                document.getElementById("led_green").style.visibility="visible";
+            }
+            else{
+                document.getElementById("led_off2").style.visibility="visible";
+                document.getElementById("led_green").style.visibility="hidden";
+            }
+            setTimeout(updateGREEN, 500);
+	    });
+    }
+
+    function updateBLUE(){
+	    $.get("/getdata?key=led3", function(data,status){
+            document.getElementById("status_blue").innerHTML = data;
+             if (data=="ON"){
+                document.getElementById("led_off1").style.visibility="hidden";
+                document.getElementById("led_blue").style.visibility="visible";
+            }
+            else{
+                document.getElementById("led_off1").style.visibility="visible";
+                document.getElementById("led_blue").style.visibility="hidden";
+            }
+            setTimeout(updateBLUE, 500);
+	    });
+    }
+
+    function getGraph(id, d1)
+            {
+                // After creating the chart, store it on the global window object
+                if (!obj) {
+                    obj = new RGraph.Line(id, d1)
+                        .set('xticks', 50)
+                        .set('background.grid.vlines', false)
+                        .set('background.grid.border', false)
+                        .set('background.barcolor1', 'white')
+                        .set('background.barcolor2', 'white')
+                        .set('title.xaxis', 'Last 30 seconds')
+                        .set('title.vpos', 0.5)
+                        .set('title', 'Server Response Time')
+                        .set('title.yaxis.pos', 0.5)
+                        .set('title.xaxis.pos', 0.5)
+                        .set('colors', ['black'])
+                        .set('linewidth',0.5)
+                        .set('yaxispos', 'right')
+                        .set('ymax', 1000)
+                        .set('xticks', 25)
+                        .set('filled', true)
+                        .set('numyticks', 2)
+                        .set('tickmarks', null)
+                        .set('ylabels.count', 5)
+                        .set('gutter.right', 40)
+
+
+
+                    var grad = obj.context.createLinearGradient(0,0,0,250);
+                    grad.addColorStop(0, '#efefef');
+                    grad.addColorStop(0.9, 'rgba(0,0,0,0)');
+
+                    obj.set('fillstyle', [grad]);
+                }
+
+                return obj;
+            }
+
+    function drawGraph (new_data)
+            {
+                // "cache" this in a local variable
+                var _RG = RGraph;
+
+                // Update the HTML counter - this is totally optional
+                document.getElementById("num_updates").innerHTML = parseInt(document.getElementById("num_updates").innerHTML) + 1;
+
+                RGraph.clear(document.getElementById("cvs"));
+
+                var graph = getGraph('cvs', d1);
+                graph.draw();
+
+                d1.push(new_data);
+
+                if (d1.length > 600) {
+                    d1 = _RG.array_shift(d1);
+                }
+
+                if (RGraph.ISIE8) {
+                    alert('[MSIE] Sorry, Internet Explorer 8 is not fast enough to support animated charts');
+                } else {
+                    obj.original_data[0] = d1;
+                    //setTimeout(drawGraph, 50);
+                }
+            }
+    function updateGraph(){
+        //alert("updating");
+        $.get("/getlatestdelay?key=delay", function(data,status){
+            //alert("update graph");
+            console.log(data);
+            drawGraph(parseInt(data));
+            //alert("drawed");
+            setTimeout(updateGraph, 100);
+	    });
+
+    }
+
+
+
+	function postdataRED(){
+	$.get("/invert?key=led1", function(data,status){
+	//alert("Data: " + data +"\nStatus: " + status);
+	    //document.getElementById("status_red").innerHTML = data;
+	});
+	}
+
+	function postdataGREEN(){
+	$.get("/invert?key=led2", function(data,status){
+	//alert("Data: " + data +"\nStatus: " + status);
+	    //document.getElementById("status_green").innerHTML = data;
+	});
+	}
+
+	function postdataBLUE(){
+	$.get("/invert?key=led3", function(data,status){
+	//alert("Data: " + data +"\nStatus: " + status);
+	    //document.getElementById("status_blue").innerHTML = data;
+	});
+	}
+
+var current_red = 1;
+function changeLED_red(){
+    switch (current_red){
+        case 0:
+            document.getElementById("led_red").style.visibility="visible";
+            document.getElementById("led_off0").style.visibility="hidden";
+            break;
+        case 1:
+            document.getElementById("led_off0").style.visibility="visible";
+            document.getElementById("led_red").style.visibility="hidden";
+            break;
+    }
+
+
+   current_red = (current_red + 1) %2;
+}
+
+
+var current_green = 1;
+function changeLED_green(){
+    switch (current_green){
+        case 0:
+            document.getElementById("led_green").style.visibility="visible";
+            document.getElementById("led_off2").style.visibility="hidden";
+            break;
+        case 1:
+            document.getElementById("led_off2").style.visibility="visible";
+            document.getElementById("led_green").style.visibility="hidden";
+            break;
+    }
+
+
+   current_green = (current_green + 1) %2;
+}
+
+var current_blue = 1;
+function changeLED_blue(){
+    switch (current_blue){
+        case 0:
+            document.getElementById("led_blue").style.visibility="visible";
+            document.getElementById("led_off1").style.visibility="hidden";
+            break;
+        case 1:
+            document.getElementById("led_off1").style.visibility="visible";
+            document.getElementById("led_blue").style.visibility="hidden";
+            break;
+    }
+
+
+   current_blue = (current_blue + 1) %2;
+}
+
+
+</script>
+  <style>
+	img.logo
+	{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	}
+
+	canvas {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 800px;
+}
+
+.imageWrapper{
+        position: relative;
+}
+
+.imageWrapper2{
+    position: relative;
+}
+
+.imageWrapper3{
+    position: relative;
+}
+
+.overlayImage{
+    position: absolute;
+    top:10%;
+    left:30%;
+
+}
+
+.overlayImage2{
+    position:absolute;
+    top:10%;
+    left:65%;
+}
+
+.overlayImage3{
+    position: absolute;
+    top:10%;
+    left:48%;
+
+}
+
+
+#red_status_line{
+    margin-left: 28%;
+    float: left;
+}
+
+#green_status_line{
+    float:left;
+    margin-left:10%;
+}
+
+#blue_status_line{
+    float:left;
+    margin-left:9%;
+}
+
+
+
+</style>
+
+  </head>
+  <body>
+
+     <img class="logo" src="{{url_for('static',filename='brcmlogo.png')}}" alt="Broadcom_Logo"></img>
+    <h1 align="center"> WICED SMART APPLIANCE DEMO APPLICATION</h1>
+
+<br><br>
+    <div id="replaced_table" align="center">
+
+    <div class="imageWrapper" onclick="changeLED_red()">
+        <img class="overlayImage" id="led_off0" src="{{url_for('static',filename='led_off.png')}}" alt="off0" onclick="postdataRED()"></img>
+        <img class = "overlayImage" id="led_red" src="{{url_for('static',filename='led_red.png')}}" alt = "red" onclick="postdataRED()"></img>
+    </div>
+
+
+
+    <div class="imageWrapper3" onclick="changeLED_green()">
+        <img class="overlayImage3" id="led_off2" src="{{url_for('static',filename='led_off.png')}}" alt="off2" onclick="postdataGREEN()"></img>
+        <img class = "overlayImage3" id="led_green" src="{{url_for('static',filename='led_green.png')}}" alt = "green" onclick="postdataGREEN()"></img>
+    </div>
+
+       <div class="imageWrapper2" onclick="changeLED_blue()">
+        <img class="overlayImage2" id="led_off1" src="{{url_for('static',filename='led_off.png')}}" alt="off1" onclick="postdataBLUE()"></img>
+        <img class = "overlayImage2" id="led_blue" src="{{url_for('static',filename='led_blue.png')}}" alt = "blue" onclick="postdataBLUE()"></img>
+    </div>
+
+    </div>
+    <br><br><br><br><br><br>
+<div id="status_bar" align="center">
+<span id="red_status_line">Status of Red LED: <span id="status_red"> </span></span>
+<span id="green_status_line">Status of Green LED: <span id="status_green"> </span></span>
+<span id="blue_status_line">Status of Blue LED: <span id="status_blue"> </span></span>
+</div>
+
+<br><br>
+     <!-- <img id="delay_graph" src="{{url_for('static',filename='delay_plot.jpeg')}}"></img>
+     <div style="visibility:hidden;"><img id="delay_graph_orig" src="{{url_for('static',filename='delay_plot.jpeg')}}"></img></div> -->
+
+    <canvas id="cvs" width="800" height="250">[No canvas support]</canvas>
+            <div style="margin-left: 25px">
+            Number of updates: <span id="num_updates">0</span>
+        </div>
+
+    <script>
+        window.onload = function ()
+        {
+
+
+
+
+
+
+            //drawGraph();
+        }
+</script>
+
+  </body>
+</html>
