@@ -38,6 +38,11 @@ def index():
 def switchindex():
     return render_template("rgbtest.html")
 
+@app.route('/combo')
+#this function renders the image switch html
+def combo():
+    return render_template("combined.html")
+
 @app.route('/updatedelay')
 def updatedelay():
     #read delay data
