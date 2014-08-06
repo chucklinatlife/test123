@@ -38,6 +38,11 @@ def index():
 def switchindex():
     return render_template("rgbtest.html")
 
+@app.route('/lamp')
+#this function renders the LAMP html
+def lampcontrol():
+    return render_template("lamp.html")
+
 @app.route('/combo')
 #this function renders the image switch html
 def combo():
