@@ -1,0 +1,254 @@
+<html>
+  <head>
+
+	<script src = "http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src = "{{url_for('static', filename='RGraph.common.core.js')}}"></script>
+	<script src = "{{url_for('static', filename='RGraph.line.js')}}"></script>
+	<script>
+	 var obj = null;
+	 var d1  = [];
+	$(document).ready(
+	    function(){
+
+            l   = 0; // The letter 'L' - NOT a one
+
+            // Pre-pad the arrays with null values
+            for (var i=0; i<600; ++i) {
+                d1.push(null);
+            }
+
+
+
+	        document.getElementById("status_lamp").innerHTML = "unknown";
+            document.getElementById("lamp_off0").style.visibility="visible";
+            document.getElementById("lamp").style.visibility="hidden";
+
+
+
+            setTimeout(updateLAMP, 500);
+            setTimeout(updateGraph,100);
+	    });
+
+    function updateLAMP(){
+	    $.get("/getdata?key=ledlamp", function(data,status){
+            document.getElementById("status_lamp").innerHTML = data;
+             if (data=="ON"){
+                document.getElementById("lamp_off0").style.visibility="hidden";
+                document.getElementById("lamp").style.visibility="visible";
+            }
+            else{
+                document.getElementById("lamp_off0").style.visibility="visible";
+                document.getElementById("lamp").style.visibility="hidden";
+            }
+            setTimeout(updateLAMP, 500);
+
+	    });
+    }
+
+    function getGraph(id, d1)
+            {
+                // After creating the chart, store it on the global window object
+                if (!obj) {
+                    obj = new RGraph.Line(id, d1)
+                        .set('xticks', 50)
+                        .set('background.grid.vlines', false)
+                        .set('background.grid.border', false)
+                        .set('background.barcolor1', 'white')
+                        .set('background.barcolor2', 'white')
+                        .set('title.xaxis', 'Last 30 seconds')
+                        .set('title.vpos', 0.5)
+                        .set('title', 'Server Response Time')
+                        .set('title.yaxis.pos', 0.5)
+                        .set('title.xaxis.pos', 0.5)
+                        .set('colors', ['black'])
+                        .set('linewidth',0.5)
+                        .set('yaxispos', 'right')
+                        .set('ymax', 1000)
+                        .set('xticks', 25)
+                        .set('filled', true)
+                        .set('numyticks', 2)
+                        .set('tickmarks', null)
+                        .set('ylabels.count', 5)
+                        .set('gutter.right', 40)
+
+
+
+                    var grad = obj.context.createLinearGradient(0,0,0,250);
+                    grad.addColorStop(0, '#efefef');
+                    grad.addColorStop(0.9, 'rgba(0,0,0,0)');
+
+                    obj.set('fillstyle', [grad]);
+                }
+
+                return obj;
+            }
+
+    function drawGraph (new_data)
+            {
+                // "cache" this in a local variable
+                var _RG = RGraph;
+
+                // Update the HTML counter - this is totally optional
+                document.getElementById("num_updates").innerHTML = parseInt(document.getElementById("num_updates").innerHTML) + 1;
+
+                RGraph.clear(document.getElementById("cvs"));
+
+                var graph = getGraph('cvs', d1);
+                graph.draw();
+
+                d1.push(new_data);
+
+                if (d1.length > 600) {
+                    d1 = _RG.array_shift(d1);
+                }
+
+                if (RGraph.ISIE8) {
+                    alert('[MSIE] Sorry, Internet Explorer 8 is not fast enough to support animated charts');
+                } else {
+                    obj.original_data[0] = d1;
+                    //setTimeout(drawGraph, 50);
+                }
+            }
+    function updateGraph(){
+        //alert("updating");
+        $.get("/getlatestdelay?key=delay", function(data,status){
+            //alert("update graph");
+            console.log(data);
+            drawGraph(parseInt(data));
+            //alert("drawed");
+            setTimeout(updateGraph, 100);
+	    });
+
+    }
+
+
+
+	function postdataLAMP(){
+	$.get("/invert?key=ledlamp", function(data,status){
+	//alert("Data: " + data +"\nStatus: " + status);
+	    //document.getElementById("status_red").innerHTML = data;
+	});
+	}
+
+/*
+var current_lamp = 1;
+function changeLamp(){
+    switch (current_lamp){
+        case 0:
+            document.getElementById("lamp").style.visibility="visible";
+            document.getElementById("lamp_off0").style.visibility="hidden";
+            break;
+        case 1:
+            document.getElementById("lamp_off0").style.visibility="visible";
+            document.getElementById("lamp").style.visibility="hidden";
+            break;
+    }
+
+
+   current_lamp = (current_lamp + 1) %2;
+}
+*/
+
+</script>
+  <style>
+	img.logo
+	{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	}
+
+	canvas {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 800px;
+}
+
+.imageWrapper{
+        position: relative;
+}
+
+.overlayImage{
+    position: absolute;
+    top:10%;
+    left:30%;
+
+}
+
+#lamp_off0
+{
+    left: 0px;
+    width: 46px;
+    background: url("{{url_for('static',filename='lamp.png')}}") 0 0;
+}
+
+.lamp_off{
+  width:120px;
+  height:123px;
+  background-image:url('Images/newcampaign_sprite2.png');
+  background-position:0px 0px;
+}
+
+.classB{
+  width:160px;
+  height:145px;
+  background-image:url('Images/newcampaign_sprite2.png');
+  background-position:0px 0px;
+}
+
+
+#red_status_line{
+    margin-left: 28%;
+    float: left;
+}
+
+
+
+</style>
+
+  </head>
+  <body>
+
+     <img class="logo" src="{{url_for('static',filename='brcmlogo.png')}}" alt="Broadcom_Logo"></img>
+    <h1 align="center"> WICED SMART APPLIANCE DEMO APPLICATION</h1>
+
+<br><br>
+    <div id="replaced_table" align="center">
+
+    <div class="imageWrapper" onclick="changeLamp()">
+        <a id="lamp_off0" href="#" onclick="postdataLAMP()"></a>
+        <a id="lamp_on1" href="#" onclick="postdataLAMP()"></a>
+    </div>
+    </div>
+    <br><br><br><br><br><br>
+<div id="status_bar" align="center">
+<span id="red_status_line">Status of LAMP: <span id="status_lamp"> </span></span>
+</div>
+
+<br><br>
+     <!-- <img id="delay_graph" src="{{url_for('static',filename='delay_plot.jpeg')}}"></img>
+     <div style="visibility:hidden;"><img id="delay_graph_orig" src="{{url_for('static',filename='delay_plot.jpeg')}}"></img></div> -->
+
+    <canvas id="cvs" width="800" height="250">[No canvas support]</canvas>
+            <div style="margin-left: 25px">
+            Number of updates: <span id="num_updates">0</span>
+        </div>
+
+    <script>
+        window.onload = function ()
+        {
+
+
+
+
+
+
+            //drawGraph();
+        }
+</script>
+
+  </body>
+</html>
