@@ -130,7 +130,7 @@
 	});
 	}
 
-/*
+
 var current_lamp = 1;
 function changeLamp(){
     switch (current_lamp){
@@ -147,7 +147,7 @@ function changeLamp(){
 
    current_lamp = (current_lamp + 1) %2;
 }
-*/
+
 
 </script>
   <style>
@@ -178,26 +178,6 @@ function changeLamp(){
 
 }
 
-#lamp_off0
-{
-    left: 0px;
-    width: 46px;
-    background: url("{{url_for('static',filename='lamp.png')}}") 0 0;
-}
-
-.lamp_off{
-  width:120px;
-  height:123px;
-  background-image:url('Images/newcampaign_sprite2.png');
-  background-position:0px 0px;
-}
-
-.classB{
-  width:160px;
-  height:145px;
-  background-image:url('Images/newcampaign_sprite2.png');
-  background-position:0px 0px;
-}
 
 
 #red_status_line{
@@ -219,8 +199,8 @@ function changeLamp(){
     <div id="replaced_table" align="center">
 
     <div class="imageWrapper" onclick="changeLamp()">
-        <a id="lamp_off0" href="#" onclick="postdataLAMP()"></a>
-        <a id="lamp_on1" href="#" onclick="postdataLAMP()"></a>
+       <img class="overlayImage" id="lamp_off0" src="{{url_for('static',filename='led_off.png')}}" alt="off0" onclick="postdataLAMP()"></img>
+        <img class = "overlayImage" id="lamp" src="{{url_for('static',filename='led_red.png')}}" alt = "red" onclick="postdataLAMP()"></img>
     </div>
     </div>
     <br><br><br><br><br><br>
