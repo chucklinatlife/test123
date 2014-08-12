@@ -44,9 +44,14 @@ def lampcontrol():
     return render_template("lamp.html")
 
 @app.route('/lampt')
-#this function renders the LAMP html
+#this function renders the LAMPtest html
 def lampcontrol1():
     return render_template("lamptest.html")
+
+@app.route('/lampt2')
+#this function renders the LAMPtest html
+def lampcontrol():
+    return render_template("lamptest2.html")
 
 @app.route('/combo')
 #this function renders the image switch html
