@@ -50,7 +50,7 @@ def lampcontrol1():
 
 @app.route('/lampt2')
 #this function renders the LAMPtest html
-def lampcontrol():
+def lampcontrol2():
     return render_template("lamptest2.html")
 
 @app.route('/combo')
