@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<head>
+<script src = "http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+$(document).ready(
+	    function(){
+	        document.getElementById("status_lamp").innerHTML = "unknown";
+	        setTimeout(updateLAMP, 500);}
+	    );
+
+
+    function postdataLAMP(){
+        $.get("/invert?key=ledlamp2", function(data,status){
+        //alert("Data: " + data +"\nStatus: " + status);
+        //document.getElementById("status_red").innerHTML = data;
+        });
+    }
+
+    function updateLAMP(){
+        $.get("/getdata?key=ledlamp2", function(data,status){
+            document.getElementById("status_lamp").innerHTML = data;
+             if (data=="ON"){
+                data="ON";
+            }
+            else{
+                data="OFF";
+            }
+            setTimeout(updateLAMP, 500);
+
+        });
+    }
+</script>
+
+</head>
+<body>
+<div align="center">
+     <img class="logo"src="{{url_for('static',filename='brcmlogo.png')}}" alt="Broadcom_Logo"></img>
+    <h1 align="center"> WICED SMART APPLIANCE DEMO APPLICATION</h1>
+</div>
+
+<div align="center">
+    <img src="http://icons.iconarchive.com/icons/icons8/ios7/256/Household-Lamp-icon.png" alt="lamp_img" width="200px">
+    <br>
+    <button onclick = "postdataLAMP()">lamp</button>
+</div>
+<div align="center">
+    <p>Status of lamp is: <span id="status_lamp"></span></p>
+</div>
+</body>
+
+</html>
